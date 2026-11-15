@@ -3,74 +3,62 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#101b2a" />
-    <meta name="description" content="在浏览器本地生成 Quectel RM5XX 的 AT+QADBKEY ADB 解锁命令。" />
-    <title>QADBKEY · Quectel ADB 命令生成器</title>
+    <meta name="theme-color" content="#f8faf9" />
+    <meta name="description" content="在浏览器本地生成 Quectel 设备的 AT+QADBKEY ADB 解锁命令。" />
+    <title>QADBKEY · ADB 解锁命令生成器</title>
     <link rel="stylesheet" href="./style.css" />
     <script type="module" src="./app.mjs"></script>
   </head>
   <body>
     <div class="page-shell">
       <header class="site-header">
-        <a class="brand" href="./" aria-label="QADBKEY 首页"><span class="brand-mark">Q<span>↗</span></span><span>QADBKEY</span></a>
-        <a class="header-link" href="https://github.com/yond36/qadbkey-unlock" target="_blank" rel="noopener noreferrer">查看源码 <span aria-hidden="true">↗</span></a>
+        <a class="brand" href="./" aria-label="QADBKEY 首页"><span class="brand-icon" aria-hidden="true">Q</span> QADBKEY</a>
+        <a class="source-link" href="https://github.com/yond36/qadbkey-unlock" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
       </header>
 
       <main>
-        <section class="hero" aria-labelledby="page-title">
-          <div class="eyebrow"><span class="signal-dot"></span> QUECTEL · RM5XX SERIES</div>
-          <h1 id="page-title">让设备响应<br /><em>变成解锁命令。</em></h1>
-          <p class="hero-copy">输入设备返回的 <code>AT+QADBKEY?</code> 挑战值，即可生成对应的 ADB 命令。计算在你的浏览器中完成。</p>
+        <section class="intro" aria-labelledby="page-title">
+          <span class="eyebrow">QUECTEL · QADBKEY</span>
+          <h1 id="page-title">ADB 解锁命令生成器</h1>
+          <p>输入设备执行 <code>AT+QADBKEY?</code> 后返回的挑战值，生成可发送到 AT 端口的命令。</p>
         </section>
 
-        <div class="workspace-grid">
-          <section class="generator-panel" aria-labelledby="generator-title">
-            <div class="panel-heading">
-              <span class="step-number">01 / GENERATE</span>
-              <h2 id="generator-title">生成命令</h2>
-              <p>复制问号查询后返回的挑战值（例如 <code>12345678</code>），不要输入整段终端日志。</p>
+        <section class="generator-panel" aria-label="生成解锁命令">
+          <form id="generator-form" novalidate>
+            <label for="challenge">挑战值</label>
+            <div class="form-row">
+              <input id="challenge" name="challenge" type="text" placeholder="例如 12345678" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="input-hint" required />
+              <button class="primary-button" type="submit">生成命令</button>
             </div>
+            <p class="field-hint" id="input-hint">仅输入返回值，不要粘贴整段日志。前后空白会去除，算法使用前 8 个字符。</p>
+          </form>
 
-            <form id="generator-form" novalidate>
-              <label for="challenge">AT+QADBKEY? 响应值</label>
-              <div class="input-wrap">
-                <span class="input-prompt" aria-hidden="true">›</span>
-                <input id="challenge" name="challenge" type="text" placeholder="在这里粘贴挑战值" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="input-hint" required />
-              </div>
-              <p class="field-hint" id="input-hint">前后空白会自动去除；算法最多使用前 8 个字符作为盐。</p>
-              <button class="primary-button" type="submit">生成解锁命令 <span aria-hidden="true">↗</span></button>
-            </form>
-
-            <div class="result" id="result" hidden>
-              <div class="result-heading"><span>生成结果</span><span class="result-tag">READY TO COPY</span></div>
-              <div class="output-wrap">
-                <input id="command" type="text" readonly aria-label="生成的 AT+QADBKEY 命令" />
-                <button id="copy-button" class="copy-button" type="button" aria-label="复制生成的命令">复制</button>
-              </div>
-              <p class="result-hint">将整条命令发送至设备的 AT 端口。</p>
+          <div class="result" id="result" hidden>
+            <label for="command">解锁命令</label>
+            <div class="output-wrap">
+              <input id="command" type="text" readonly aria-label="生成的 AT+QADBKEY 命令" />
+              <button id="copy-button" class="copy-button" type="button">复制</button>
             </div>
-            <p class="status-message" id="status" role="status" aria-live="polite"></p>
-          </section>
+          </div>
+          <p class="status-message" id="status" role="status" aria-live="polite"></p>
+        </section>
 
-          <aside class="guide-panel" aria-labelledby="guide-title">
-            <div class="guide-topline"><span>FIELD GUIDE</span><span aria-hidden="true">↗</span></div>
-            <h2 id="guide-title">三步完成</h2>
-            <ol class="guide-list">
-              <li><span class="guide-index">01</span><div><strong>查询设备</strong><p>向设备发送 <code>AT+QADBKEY?</code>，读取返回的挑战值。</p></div></li>
-              <li><span class="guide-index">02</span><div><strong>生成命令</strong><p>把挑战值填入左侧输入框，点击生成。</p></div></li>
-              <li><span class="guide-index">03</span><div><strong>发送命令</strong><p>复制完整的 <code>AT+QADBKEY="…"</code> 命令，发送回设备。</p></div></li>
-            </ol>
-            <div class="privacy-note"><span class="privacy-icon" aria-hidden="true">◎</span><div><strong>仅在本地计算</strong><p>无需注册、无需上传。页面加载后，挑战值不会发送到服务器或保存在浏览器中。</p></div></div>
-          </aside>
-        </div>
+        <p class="privacy-note"><span aria-hidden="true">●</span> 浏览器本地计算；挑战值和生成结果不会上传或保存。</p>
 
-        <section class="compatibility" aria-label="设备兼容性">
-          <span>已提及的设备型号</span>
-          <div class="model-list"><span>RM520N-GL</span><span>RM502Q-AE</span><span>RM500Q-AE</span><span>EM120K-GL</span></div>
+        <section class="compatibility" aria-labelledby="models-title">
+          <div class="section-heading">
+            <h2 id="models-title">支持的型号</h2>
+            <p>实际能否开启 ADB 还取决于固件和接口配置。</p>
+          </div>
+          <ul class="model-list">
+            <li>RM520N-GL</li><li>RM502Q-AE</li><li>RM500Q-AE</li><li>EM120K-GL</li>
+            <li>RM520N-GLAP</li><li>RM521F-GL</li><li>RM551E-GL</li><li>RG500Q-EA</li><li>RG501-EU</li>
+            <li>EC25-AF</li><li>EC25-EU</li><li>EC25-AFX</li><li>EG25G</li><li>EC25E</li>
+          </ul>
         </section>
       </main>
 
-      <footer class="site-footer"><span>QADBKEY · 基于原项目的浏览器版本</span><span>仅用于你拥有或获准测试的设备 · <a href="https://github.com/yond36/qadbkey-unlock/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">GPL-3.0</a></span></footer>
+      <footer class="site-footer"><span>QADBKEY · 仅用于你拥有或获准测试的设备</span><a href="https://github.com/yond36/qadbkey-unlock/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">GPL-3.0</a></footer>
     </div>
   </body>
 </html>

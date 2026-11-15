@@ -1,18 +1,38 @@
-# Quectel RM5XX QADBKEY command generator
+# Quectel QADBKEY command generator
 
-A browser version of the Quectel ADBKEY unlock script for RM520N-GL, RM502Q-AE, RM500Q-AE, EM120K-GL and other RM5XX series modems. Use it only with devices you own or are authorized to test.
+A browser version of the Quectel ADBKEY unlock script. Use it only with devices you own or are authorized to test.
 
 **Web app:** https://yond36.github.io/qadbkey-unlock/
 
 ## Use the web app
 
 1. Send `AT+QADBKEY?` to your modem and copy the returned challenge value (for example, `12345678`). Enter the value itself, not a full terminal transcript.
-2. Paste it into the web page and select **生成解锁命令** (Generate command).
+2. Paste it into the web page and select **生成命令** (Generate command).
 3. Copy the complete result and send it to the modem's AT port. The example value produces `AT+QADBKEY="0jXKXQwSwMxYoeg"`.
 
 The calculation runs entirely in your browser. The challenge and generated command are not uploaded or stored. The page has no external runtime dependencies. The script follows the Python version's MD5-crypt salt behavior: only the first eight characters of the value are used as salt. Whitespace around the pasted value is removed by the web form.
 
 For background on ADB unlocking, see [Unlocking ADB](https://github.com/iamromulan/cellular-modem-wiki/blob/main/quectel/sdxlemur/sdxlemur_m.2_to_eth.md#unlocking-adb).
+
+## Model evidence
+
+The original project lists RM520N-GL, RM502Q-AE, RM500Q-AE and EM120K-GL. The following public Quectel forum examples give a model, challenge and complete answer whose **exact characters** match this calculator. These examples validate key derivation for those challenges; they do not guarantee ADB access on every firmware or interface configuration.
+
+| Model | `AT+QADBKEY?` value | Matching answer | Forum thread |
+| --- | --- | --- | --- |
+| RM520N-GL | `23398943` | `BzUqe9JGlQoub.z` | [ADB key for RM520N-GL](https://forums.quectel.com/t/adb-key-for-rm520n-gl/26578) |
+| RM520N-GLAP | `25816482` | `MPdpWAU6C.BL9Eq` | [RM520N-GLAP ADB](https://forums.quectel.com/t/rm520n-glap-adb/36271) |
+| RM521F-GL | `31711264` | `SV3LHz1ynUZZmYU` | [ADB key request](https://forums.quectel.com/t/adb-key-request-for-quectel-modem/29457) |
+| RM551E-GL | `47454133` | `yWjfOllPZtKId5Z` | [RM551E-GL ADB key](https://forums.quectel.com/t/adb-unlock-key-rm551e-gl/43758) |
+| RG500Q-EA | `14966991` | `WihtftY7/7SWvEd` | [RG500Q-EA ADB key](https://forums.quectel.com/t/rg500q-ea-and-adb-key/30222) |
+| RG501-EU | `52582990` | `QFkS3ewn3KNKaX.` | [RG501-EU ADB key](https://forums.quectel.com/t/adb-key-for-rg501-eu/47510) |
+| EC25-AF | `35787336` | `zoCLUARzj8zsJIO` | [EC25 ADB interface](https://forums.quectel.com/t/how-to-enable-adb-interface-for-new-ec25-e-modem/21951) |
+| EC25-EU | `15478726` | `n9Qq0s1x4LtgAvt` | [EC25 ADB interface](https://forums.quectel.com/t/how-to-enable-adb-interface-for-new-ec25-e-modem/21951) |
+| EC25-AFX | `29543536` | `MSkivdUEUOuFJmY` | [EC25 ADB interface](https://forums.quectel.com/t/how-to-enable-adb-interface-for-new-ec25-e-modem/21951) |
+| EG25G | `32382643` | `Z1mVbkVsGNRUyQ2` | [EC21, EC25, EG25 requests](https://forums.quectel.com/t/adb-key-request-for-ec21-ec25-eg25/29153) |
+| EC25E | `29866718` | `ArJutRI0gTdus7t` | [EC21, EC25, EG25 requests](https://forums.quectel.com/t/adb-key-request-for-ec21-ec25-eg25/29153) |
+
+The forum did not expose a complete public challenge/answer pair specifically identified as RM502Q-AE, RM500Q-AE or EM120K-GL during this review, so those three remain listed on the original project's basis. Some threads report firmware-dependent behavior: the RG501-EU requester succeeded on R12 after an error on R13, while the RM520N-GLAP command returned `OK` but ADB required a separate PCIe configuration change. An EC21E forum answer did not match this algorithm, and the longer structured RM500U-family answers use a different format; neither was added to the site.
 
 ## Run locally
 
@@ -39,7 +59,7 @@ python3 qadbkey-unlock2.py --self-test
 node --test test/crypto.test.mjs
 ```
 
-Both checks cover the same eight known MD5-crypt and unlock-key vectors. The Python command reports `self-test OK (8 vectors)` on success. Node.js is needed only to run the browser algorithm tests.
+The Python self-test checks eight known vectors. The Node tests check those same vectors plus one forum example per model in the table above. Node.js is needed only to run the browser algorithm tests.
 
 ## Credits and license
 

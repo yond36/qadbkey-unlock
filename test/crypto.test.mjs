@@ -14,6 +14,19 @@ const keys = [
   ["a", "mnZKGBd.NEj5l//"],
   ["ABC1234567890", "AnravKmhRwK70wH"],
 ];
+const forumCases = [
+  ["RM520N-GL", "23398943", "BzUqe9JGlQoub.z"],
+  ["RM520N-GLAP", "25816482", "MPdpWAU6C.BL9Eq"],
+  ["RM521F-GL", "31711264", "SV3LHz1ynUZZmYU"],
+  ["RM551E-GL", "47454133", "yWjfOllPZtKId5Z"],
+  ["RG500Q-EA", "14966991", "WihtftY7/7SWvEd"],
+  ["RG501-EU", "52582990", "QFkS3ewn3KNKaX."],
+  ["EC25-AF", "35787336", "zoCLUARzj8zsJIO"],
+  ["EC25-EU", "15478726", "n9Qq0s1x4LtgAvt"],
+  ["EC25-AFX", "29543536", "MSkivdUEUOuFJmY"],
+  ["EG25G", "32382643", "Z1mVbkVsGNRUyQ2"],
+  ["EC25E", "29866718", "ArJutRI0gTdus7t"],
+];
 
 test("MD5-crypt matches the original script's glibc vectors", () => {
   for (const [password, setting, expected] of hashes) {
@@ -24,5 +37,11 @@ test("MD5-crypt matches the original script's glibc vectors", () => {
 test("unlock keys match the Python CLI, including short and truncated salts", () => {
   for (const [serial, expected] of keys) {
     assert.equal(generateUnlockKey(serial), expected, serial);
+  }
+});
+
+test("listed forum model challenges match their published answers", () => {
+  for (const [model, challenge, expected] of forumCases) {
+    assert.equal(generateUnlockKey(challenge), expected, model);
   }
 });
