@@ -14,6 +14,20 @@ The calculation runs entirely in your browser. The challenge and generated comma
 
 For background on ADB unlocking, see [Unlocking ADB](https://github.com/iamromulan/cellular-modem-wiki/blob/main/quectel/sdxlemur/sdxlemur_m.2_to_eth.md#unlocking-adb).
 
+## ADB connection notes
+
+An `OK` response to the generated unlock command does not guarantee a working ADB connection. Firmware support, USB interface configuration and host drivers also matter.
+
+Before changing the USB configuration, query `AT+QCFG="usbcfg"` and record the original values. Incorrect settings can remove the AT serial port, network interface or other USB interfaces.
+
+In the [RM520N-GL forum discussion](https://forums.quectel.com/t/how-to-enable-adb-interface-for-rm520n-gl/34942/10), posts 19–20 report recovery and working ADB with:
+
+```text
+AT+QCFG="usbcfg",0x2C7C,0x0801,1,1,1,1,1,1,0
+```
+
+This is a reference for that thread's device and situation, not a universal configuration for every listed model or firmware. Confirm the parameters and required USB interfaces for your device before applying it. Use straight ASCII quotation marks and the explicit hexadecimal PID `0x0801`; the thread's earlier bare `0801` resulted in a different PID. Check USB VID/PID and host drivers if the device is not recognized. If the AT port has disappeared, the thread describes using Linux to restore AT access. Post 10 itself assumes ADB already works when suggesting `/dev/smd7`; it does not explain how to establish an ADB connection.
+
 ## Model evidence
 
 The original project lists RM520N-GL, RM502Q-AE, RM500Q-AE and EM120K-GL. The following public Quectel forum examples give a model, challenge and complete answer whose **exact characters** match this calculator. These examples validate key derivation for those challenges; they do not guarantee ADB access on every firmware or interface configuration.

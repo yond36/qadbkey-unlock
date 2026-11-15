@@ -45,6 +45,17 @@
 
         <p class="privacy-note"><span aria-hidden="true">●</span> 浏览器本地计算；挑战值和生成结果不会上传或保存。</p>
 
+        <section class="usage-notes" aria-labelledby="notes-title">
+          <h2 id="notes-title">注意事项</h2>
+          <p>执行解锁命令并返回 <code>OK</code>，也不代表 ADB 一定能连接；还需要固件支持、正确的 USB 接口配置和电脑端驱动。</p>
+          <ul>
+            <li>修改前先用 <code>AT+QCFG="usbcfg"</code> 查询并记录原配置。USB 配置不正确可能导致 AT 串口、网卡等接口消失。</li>
+            <li>移远论坛中 RM520N-GL 的恢复示例使用以下配置。仅供该帖场景参考，请先按自己的型号、固件及所需接口确认参数。</li>
+          </ul>
+          <pre><code>AT+QCFG="usbcfg",0x2C7C,0x0801,1,1,1,1,1,1,0</code></pre>
+          <p>注意使用英文半角引号，PID 应写作 <code>0x0801</code>，不要照抄为 <code>0801</code>。若电脑未识别设备，检查 USB VID/PID 和驱动；若 AT 串口已消失，可参考帖子通过 Linux 恢复 AT 访问。<a href="https://forums.quectel.com/t/how-to-enable-adb-interface-for-rm520n-gl/34942/19" target="_blank" rel="noopener noreferrer">查看论坛讨论 ↗</a></p>
+        </section>
+
         <section class="compatibility" aria-labelledby="models-title">
           <div class="section-heading">
             <h2 id="models-title">支持的型号</h2>

@@ -47,6 +47,14 @@ label { display: block; margin-bottom: 10px; font-size: 14px; font-weight: 700; 
 .privacy-note { display: flex; align-items: baseline; gap: 8px; margin: 18px 0 0; color: #63746d; font-size: 12px; line-height: 1.6; }
 .privacy-note span { color: #18815d; font-size: 8px; }
 
+.usage-notes { margin-top: 30px; padding: 23px 25px; border: 1px solid #e6dfc9; border-radius: 12px; background: #fffcf3; }
+.usage-notes h2 { color: #65512d; }
+.usage-notes p, .usage-notes li { color: #75664e; font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.usage-notes p { margin: 12px 0 0; }
+.usage-notes ul { margin: 12px 0; padding-left: 19px; }
+.usage-notes li + li { margin-top: 6px; }
+.usage-notes pre { max-width: 100%; margin: 14px 0; padding: 12px; overflow-x: auto; border: 1px solid #ece4d0; border-radius: 7px; background: #fff; color: #5b4b31; font-size: 12px; line-height: 1.7; }
+.usage-notes a { color: #116d50; text-underline-offset: 3px; }
 .compatibility { margin-top: 54px; }
 .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; }
 h2 { margin: 0; font-size: 17px; letter-spacing: -.025em; }
